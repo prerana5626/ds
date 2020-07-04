@@ -1,2 +1,0 @@
-make
-./deepstream-app -c configs/test5_dec_infer-resnet_tracker_sgie_tiled_display_int8_peoplenet.txt
