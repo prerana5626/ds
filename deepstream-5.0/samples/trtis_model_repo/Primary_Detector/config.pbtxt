@@ -1,0 +1,44 @@
+###############################################################################
+#
+# Copyright (c) 2020 NVIDIA CORPORATION.  All Rights Reserved.
+#
+# NVIDIA CORPORATION and its licensors retain all intellectual property
+# and proprietary rights in and to this software, related documentation
+# and any modifications thereto.  Any use, reproduction, disclosure or
+# distribution of this software and related documentation without an express
+# license agreement from NVIDIA CORPORATION is strictly prohibited.
+#
+###############################################################################
+
+name: "Primary_Detector"
+platform: "tensorrt_plan"
+max_batch_size: 30
+default_model_filename: "resnet10.caffemodel_b30_gpu0_int8.engine"
+input [
+  {
+    name: "input_1"
+    data_type: TYPE_FP32
+    format: FORMAT_NCHW
+    dims: [ 3, 368, 640 ]
+  }
+]
+output [
+  {
+    name: "conv2d_bbox"
+    data_type: TYPE_FP32
+    dims: [ 16, 23, 40 ]
+  },
+
+  {
+    name: "conv2d_cov/Sigmoid"
+    data_type: TYPE_FP32
+    dims: [ 4, 23, 40 ]
+  }
+]
+instance_group [
+  {
+    kind: KIND_GPU
+    count: 1
+    gpus: [ 0 ]
+  }
+]

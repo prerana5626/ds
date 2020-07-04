@@ -1,0 +1,39 @@
+###############################################################################
+#
+# Copyright (c) 2020 NVIDIA CORPORATION.  All Rights Reserved.
+#
+# NVIDIA CORPORATION and its licensors retain all intellectual property
+# and proprietary rights in and to this software, related documentation
+# and any modifications thereto.  Any use, reproduction, disclosure or
+# distribution of this software and related documentation without an express
+# license agreement from NVIDIA CORPORATION is strictly prohibited.
+#
+###############################################################################
+
+name: "Segmentation_Semantic"
+platform: "tensorrt_plan"
+max_batch_size: 1
+input [
+  {
+    name: "data"
+    data_type: TYPE_FP32
+    format: FORMAT_NCHW
+    dims: [3, 512, 512]
+  }
+]
+
+output [
+  {
+    name: "final_conv/BiasAdd"
+    data_type: TYPE_FP32
+    dims: [4, 512, 512]
+  }
+]
+
+instance_group {
+  name: "semantic"
+  count: 1
+  gpus: 0
+  kind: KIND_GPU
+}
+default_model_filename: "unetres18_v4_pruned0.65_800_data.uff_b1_gpu0_fp32.engine"

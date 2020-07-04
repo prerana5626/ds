@@ -1,0 +1,13 @@
+
+1)cd sources/apps/sample_apps/deepstream-test5_test
+make
+./deepstream-app -c configs/test5_dec_infer-resnet_tracker_sgie_tiled_display_int8_peoplenet.txt
+Issue --> Tiler/display does not work as expected . No error.
+
+2) cd sources/gst-plugins/gst-dsexample
+sudo make install
+cd sources/apps/sample_apps/deepstream-test5_test
+make
+./deepstream-app -c configs/test5_dec_infer-resnet_tracker_sgie_tiled_display_int8_peoplenet.txt
+Error --> Segmentation fault on line 928 of gstdsexample.cpp. If cv::write is removed, then it works like point 1
+

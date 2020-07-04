@@ -1,0 +1,48 @@
+infer_config {
+  unique_id: 6
+  gpu_ids: [0]
+  max_batch_size: 16
+  backend {
+    trt_is {
+      model_name: "Secondary_CarMake"
+      version: -1
+      model_repo {
+        root: "../../trtis_model_repo"
+        strict_model_config: true
+      }
+    }
+  }
+
+  preprocess {
+    network_format: IMAGE_FORMAT_BGR
+    tensor_order: TENSOR_ORDER_LINEAR
+    maintain_aspect_ratio: 0
+    frame_scaling_hw: FRAME_SCALING_HW_DEFAULT
+    frame_scaling_filter: 1
+    normalize {
+      scale_factor: 1
+      mean_file: "../../models/Secondary_CarMake/mean.ppm"
+    }
+  }
+
+  postprocess {
+    labelfile_path: "../../models/Secondary_CarMake/labels.txt"
+    classification {
+      threshold: 0.51
+    }
+  }
+
+}
+input_control {
+  process_mode: PROCESS_MODE_CLIP_OBJECTS
+  operate_on_gie_id: 1
+  operate_on_class_ids: [0]
+  interval: 0
+  async_mode: true
+  object_control {
+    bbox_filter {
+      min_width: 128
+      min_height: 128
+    }
+  }
+}

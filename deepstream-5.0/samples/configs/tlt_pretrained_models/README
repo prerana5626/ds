@@ -1,0 +1,80 @@
+###############################################################################
+# Copyright (c) 2020 NVIDIA Corporation.  All rights reserved.
+#
+# NVIDIA Corporation and its licensors retain all intellectual property
+# and proprietary rights in and to this software, related documentation
+# and any modifications thereto.  Any use, reproduction, disclosure or
+# distribution of this software and related documentation without an express
+# license agreement from NVIDIA Corporation is strictly prohibited.
+###############################################################################
+
+This document describes the procedure to download and run the Transfer Learning
+Toolkit pre-trained purpose-built models in DeepStream.
+
+The following pre-trained models are provided:
+- DashCamNet (https://ngc.nvidia.com/catalog/models/nvidia:tlt_dashcamnet)
+- VehicleMakeNet (https://ngc.nvidia.com/catalog/models/nvidia:tlt_vehiclemakenet)
+- VehicleTypeNet (https://ngc.nvidia.com/catalog/models/nvidia:tlt_vehicletypenet)
+- TrafficeCamNet (https://ngc.nvidia.com/catalog/models/nvidia:tlt_trafficcamnet)
+- PeopleNet (https://ngc.nvidia.com/catalog/models/nvidia:tlt_peoplenet)
+- FaceDetectIR (https://ngc.nvidia.com/catalog/models/nvidia:tlt_facedetectir)
+
+*******************************************************************************
+Downloading the models
+*******************************************************************************
+The models can be downloaded by running the following commands from the same
+directory as this README. This will ensure that the models are downloaded to
+the paths that the config files expect:
+
+mkdir -p ../../models/tlt_pretrained_models/dashcamnet && \
+    wget https://api.ngc.nvidia.com/v2/models/nvidia/tlt_dashcamnet/versions/pruned_v1.0/files/resnet18_dashcamnet_pruned.etlt \
+    -O ../../models/tlt_pretrained_models/dashcamnet/resnet18_dashcamnet_pruned.etlt && \
+    wget https://api.ngc.nvidia.com/v2/models/nvidia/tlt_dashcamnet/versions/pruned_v1.0/files/dashcamnet_int8.txt \
+    -O ../../models/tlt_pretrained_models/dashcamnet/dashcamnet_int8.txt
+mkdir -p ../../models/tlt_pretrained_models/vehiclemakenet && \
+    wget https://api.ngc.nvidia.com/v2/models/nvidia/tlt_vehiclemakenet/versions/pruned_v1.0/files/resnet18_vehiclemakenet_pruned.etlt \
+    -O ../../models/tlt_pretrained_models/vehiclemakenet/resnet18_vehiclemakenet_pruned.etlt && \
+    wget https://api.ngc.nvidia.com/v2/models/nvidia/tlt_vehiclemakenet/versions/pruned_v1.0/files/vehiclemakenet_int8.txt \
+    -O ../../models/tlt_pretrained_models/vehiclemakenet/vehiclemakenet_int8.txt
+mkdir -p ../../models/tlt_pretrained_models/vehicletypenet && \
+    wget https://api.ngc.nvidia.com/v2/models/nvidia/tlt_vehicletypenet/versions/pruned_v1.0/files/resnet18_vehicletypenet_pruned.etlt \
+    -O ../../models/tlt_pretrained_models/vehicletypenet/resnet18_vehicletypenet_pruned.etlt && \
+    wget https://api.ngc.nvidia.com/v2/models/nvidia/tlt_vehicletypenet/versions/pruned_v1.0/files/vehicletypenet_int8.txt \
+    -O ../../models/tlt_pretrained_models/vehicletypenet/vehicletypenet_int8.txt
+mkdir -p ../../models/tlt_pretrained_models/trafficcamnet && \
+    wget https://api.ngc.nvidia.com/v2/models/nvidia/tlt_trafficcamnet/versions/pruned_v1.0/files/resnet18_trafficcamnet_pruned.etlt \
+    -O ../../models/tlt_pretrained_models/trafficcamnet/resnet18_trafficcamnet_pruned.etlt && \
+    wget https://api.ngc.nvidia.com/v2/models/nvidia/tlt_trafficcamnet/versions/pruned_v1.0/files/trafficnet_int8.txt \
+    -O ../../models/tlt_pretrained_models/trafficcamnet/trafficnet_int8.txt
+mkdir -p ../../models/tlt_pretrained_models/peoplenet && \
+    wget https://api.ngc.nvidia.com/v2/models/nvidia/tlt_peoplenet/versions/pruned_v1.0/files/resnet34_peoplenet_pruned.etlt \
+    -O ../../models/tlt_pretrained_models/peoplenet/resnet34_peoplenet_pruned.etlt
+mkdir -p ../../models/tlt_pretrained_models/facedetectir && \
+    wget https://api.ngc.nvidia.com/v2/models/nvidia/tlt_facedetectir/versions/pruned_v1.0/files/resnet18_facedetectir_pruned.etlt \
+    -O ../../models/tlt_pretrained_models/facedetectir/resnet18_facedetectir_pruned.etlt && \
+    wget https://api.ngc.nvidia.com/v2/models/nvidia/tlt_facedetectir/versions/pruned_v1.0/files/facedetectir_int8.txt \
+    -O ../../models/tlt_pretrained_models/facedetectir/facedetectir_int8.txt
+
+
+*******************************************************************************
+Running the models in DeepStream:
+*******************************************************************************
+- An nvinfer configuration file (config_infer_*) is provided for each of the
+  models.
+- Following deepstream-app configuration files are provided:
+  - deepstream_app_source1_dashcamnet_vehiclemakenet_vehicletypenet.txt
+  - deepstream_app_source1_peoplenet.txt
+  - deepstream_app_source1_facedetectir.txt
+  - deepstream_app_source1_trafficcamnet.txt
+- Make sure encoded TLT model file paths and the INT8 calibration file paths
+  are correct in the config_infer_* files and that the files exist.
+- To re-use the engine files built in the first run, make sure the
+  model-engine-file paths are correct in config_infer_* and deepstream_app_*
+  configuration files.
+- Run deepstream-app using one of the deepstream_app_* configuration files.
+  $ deepstream-app -c <deepstream_app_config>
+  e.g.
+  $ deepstream-app -c deepstream_app_source1_dashcamnet_vehiclemakenet_vehicletypenet.txt
+
+  NOTE: Sample images/clips for FaceDetectIR would be available on it's NGC
+        page.

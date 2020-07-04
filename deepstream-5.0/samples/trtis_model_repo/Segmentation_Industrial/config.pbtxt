@@ -1,0 +1,39 @@
+###############################################################################
+#
+# Copyright (c) 2020 NVIDIA CORPORATION.  All Rights Reserved.
+#
+# NVIDIA CORPORATION and its licensors retain all intellectual property
+# and proprietary rights in and to this software, related documentation
+# and any modifications thereto.  Any use, reproduction, disclosure or
+# distribution of this software and related documentation without an express
+# license agreement from NVIDIA CORPORATION is strictly prohibited.
+#
+###############################################################################
+
+name: "Segmentation_Industrial"
+platform: "tensorrt_plan"
+max_batch_size: 1
+input [
+  {
+    name: "input_1"
+    data_type: TYPE_FP32
+    format: FORMAT_NCHW
+    dims: [1, 512, 512]
+  }
+]
+
+output [
+  {
+    name: "conv2d_19/Sigmoid"
+    data_type: TYPE_FP32
+    dims: [1, 512, 512]
+  }
+]
+
+instance_group {
+  name: "industrial"
+  count: 1
+  gpus: 0
+  kind: KIND_GPU
+}
+default_model_filename: "unet_output_graph.uff_b1_gpu0_fp32.engine"

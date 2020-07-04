@@ -1,0 +1,38 @@
+###############################################################################
+#
+# Copyright (c) 2020 NVIDIA CORPORATION.  All Rights Reserved.
+#
+# NVIDIA CORPORATION and its licensors retain all intellectual property
+# and proprietary rights in and to this software, related documentation
+# and any modifications thereto.  Any use, reproduction, disclosure or
+# distribution of this software and related documentation without an express
+# license agreement from NVIDIA CORPORATION is strictly prohibited.
+#
+###############################################################################
+
+name: "Secondary_CarColor"
+platform: "tensorrt_plan"
+max_batch_size: 16
+default_model_filename: "resnet18.caffemodel_b16_gpu0_int8.engine"
+input [
+  {
+    name: "input_1"
+    data_type: TYPE_FP32
+    format: FORMAT_NCHW
+    dims: [3, 224, 224]
+  }
+]
+output [
+  {
+    name: "predictions/Softmax"
+    data_type: TYPE_FP32
+    dims: [12, 1, 1]
+  }
+]
+instance_group [
+  {
+    kind: KIND_GPU
+    count: 1
+    gpus: [ 0 ]
+  }
+]
